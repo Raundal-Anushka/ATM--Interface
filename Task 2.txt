@@ -1,0 +1,116 @@
+Task 2 For Java Intern programming
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+class Patient {
+    private String patientId;
+    private String name;
+    private int age;
+    private String gender;
+    private String contactNumber;
+    private String address;
+    private LocalDate registrationDate;
+
+    public Patient(String patientId, String name, int age, String gender, String contactNumber, String address) {
+        this.patientId = patientId;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.contactNumber = contactNumber;
+        this.address = address;
+        this.registrationDate = LocalDate.now(); // Set registration date to today
+    }
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+    public void displayInfo() {
+        System.out.println("Patient ID: " + patientId);
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Gender: " + gender);
+        System.out.println("Contact: " + contactNumber);
+        System.out.println("Address: " + address);
+        System.out.println("Registration Date: " + registrationDate);
+        System.out.println();
+    }
+}
+class PatientManagement {
+    private Map<String, Patient> patientDatabase = new HashMap<>();
+    public void registerPatient(Patient patient) {
+        if (!patientDatabase.containsKey(patient.getPatientId())) {
+            patientDatabase.put(patient.getPatientId(), patient);
+            System.out.println("Patient registered successfully.");
+        } else {
+            System.out.println("Patient with ID " + patient.getPatientId() + " already exists.");
+        }
+    }
+    public Patient getPatient(String patientId) {
+        return patientDatabase.get(patientId);
+    }
+    public void updatePatient(String patientId, Patient updatedPatient) {
+        if (patientDatabase.containsKey(patientId)) {
+            patientDatabase.put(patientId, updatedPatient);
+            System.out.println("Patient information updated successfully.");
+        } else {
+            System.out.println("Patient with ID " + patientId + " not found.");
+        }
+    }
+    public void displayAllPatients() {
+        if (patientDatabase.isEmpty()) {
+            System.out.println("No patients registered.");
+        } else {
+            for (Patient patient : patientDatabase.values()) {
+                patient.displayInfo();
+            }
+        }
+    }
+}
+public class HospitalManagementSystem {
+    public static void main(String[] args) {
+        PatientManagement patientManagement = new PatientManagement();
+        Patient patient1 = new Patient("P001", "Alice Smith", 30, "Female", "555-1234", "123 Main St");
+        Patient patient2 = new Patient("P002", "Bob Johnson", 45, "Male", "555-5678", "456 Elm St");
+
+        patientManagement.registerPatient(patient1);
+        patientManagement.registerPatient(patient2);
+        System.out.println("All Registered Patients:");
+        patientManagement.displayAllPatients();
+        Patient retrievedPatient = patientManagement.getPatient("P001");
+        if (retrievedPatient != null) {
+            System.out.println("Retrieved Patient Details:");
+            retrievedPatient.displayInfo();
+        } else {
+            System.out.println("Patient not found.");
+        }
+        Patient updatedPatient = new Patient("P002", "Bob Johnson", 46, "Male", "555-5678", "456 Elm St");
+        patientManagement.updatePatient("P002", updatedPatient);
+        System.out.println("All Patients After Update:");
+        patientManagement.displayAllPatients();
+    }
+}
